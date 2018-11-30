@@ -1,0 +1,129 @@
+swagger: "2.0"
+info:
+  description: "Patients Profile Management"
+  version: "1.0.0"
+  title: "Patients Profile Management"
+  termsOfService: "http://swagger.io/terms/"
+  contact:
+    email: "apiteam@swagger.io"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+tags:
+- name: "patients"
+  description: "Everything about customers"
+schemes:
+- "https"
+- "http"
+paths:
+  /v1/patients/bulk:
+    post:
+      tags:
+      - "patients"
+      summary: "Upsert multi patients"
+      description: "Upsert multi patients"
+      operationId: "upsertMultiPatients"
+      consumes:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "json"
+        description: "List of patients"
+        required: true
+        schema:
+          type: "string"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            type: "string"
+        400:
+          description: "Invalid input"
+        500:
+          description: "Internal server error"
+         
+  /v1/patients/{patientId}:
+    get:
+      tags:
+      - "patients"
+      summary: "Get patient by id"
+      description: "Get patient by id"
+      operationId: "readPatientById"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "path"
+        name: "patientId"
+        description: "Id of patient to get"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            type: "string"
+        400:
+          description: "Invalid input"
+        404:
+         description: "Patient not found"
+        500:
+          description: "Internal server error"
+  
+  v1/patients:
+    get:
+      tags: 
+      - "patients"
+      summary: "get patient profiles"
+      description: "get patient profiles by name, disease, medicine. If no query then return all patient profiles"
+      operationId: "searchPatients"
+      parameters: 
+      - in: "query"
+        name: "name"
+        type: "string"
+        description: "name of patient"
+        required: false
+      - in: "query"
+        name: "disease"
+        type: "string"
+        description: "name of disease"
+        required: false
+      - in: "query"
+        name: "medicine"
+        type: "string"
+        description: "name of medicine"
+        required: false
+      responses:
+        200:
+          description: "profiles found"
+          schema:
+            type: "string"
+        400:
+          description: "Invalid input"
+        500:
+          description: "server error"
+          
+  v1/patients/{id}/tests:
+    get:
+      tags: 
+      - "patients"
+      summary: "get info about patient be allergic to a specific medicine"
+      description: "using id on path and query name to get info about patient be allergic to a specific medicine"
+      operationId: "searchTest"
+      parameters: 
+      - in: "path"
+        name: "id"
+        type: "string"
+        description: "id of the patient"
+        required: true
+      - in: "query"
+        name: "name"
+        type: "string"
+        description: "name of medicine"
+        required: true
+      responses:
+        200:
+          description: "Ok"
+        400:
+          description: "Invalid input"
+        500:
+          description: "server error"
