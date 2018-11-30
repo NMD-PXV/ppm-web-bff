@@ -1,0 +1,98 @@
+[
+  {
+    "id": "asdas",
+    "personal": {
+      "fullName": "Nguyen Minh Duc",
+      "address": "3/115 Binh Duong",
+      "dob": "1995-09-18",
+      "pob": "Binh Duong",
+      "sex": "MALE"
+    },
+    "medicalProfile": [
+      {
+        "id": "asdas",
+        "patientId": "123",
+        "createdDate": "2018-11-30",
+        "modifiedDate": "2018-11-30",
+        "doctor": "Dr Strange",
+        "diseasesHistory": [
+          "flu",
+          "H1N1"
+        ],
+        "prescriptions": {
+          "recentUsed": [
+            {
+              "name": "paracetamol 300",
+              "quantity": 10
+            },
+            {
+              "name": "afferagant 300",
+              "quantity": 15
+            }
+          ],
+          "beingUsed": [
+            {
+              "name": "paracetamol 500",
+              "quantity": 10
+            },
+            {
+              "name": "afferagant 500",
+              "quantity": 15
+            }
+          ]
+        },
+        "medicalTestResult": {
+          "bloodType": "O",
+          "xRay": "normal",
+          "ultraSound": "normal",
+          "allergicMedicines": [
+            "panadol",
+            "stepsin"
+          ]
+        }
+      },
+      {
+        "createdDate": "2018-9-15",
+        "modifiedDate": "2018-9-15",
+        "doctor": "Dr Mahatan",
+        "diseasesHistory": {
+          "name": [
+            "flu",
+            "H1N1"
+          ]
+        },
+        "prescriptions": {
+          "recentUsed": [
+            {
+              "name": "paracetamol 300",
+              "quantity": 10
+            },
+            {
+              "name": "afferagant 300",
+              "quantity": 15
+            }
+          ],
+          "beingUsed": [
+            {
+              "name": "paracetamol 500",
+              "quantity": "10"
+            },
+            {
+              "name": "afferagant 500",
+              "quantity": 15
+            }
+          ]
+        },
+        "medicalTestResult": {
+          "bloodType": "O",
+          "xRay": "normal",
+          "ultraSound": "normal",
+          "allergicMedicines": [
+            "panadol",
+            "tepsin"
+          ]
+        }
+      }
+    ]
+  }
+]
