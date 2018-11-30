@@ -76,6 +76,8 @@ paths:
       summary: "get patient profiles"
       description: "get patient profiles by name, disease, medicine. If no query then return all patient profiles"
       operationId: "searchPatients"
+      produces:
+      - "application/json"
       parameters: 
       - in: "query"
         name: "name"
@@ -109,6 +111,8 @@ paths:
       summary: "get info about patient be allergic to a specific medicine"
       description: "using id on path and query name to get info about patient be allergic to a specific medicine"
       operationId: "searchTest"
+      produces:
+      - "application/json"
       parameters: 
       - in: "path"
         name: "id"
