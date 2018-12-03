@@ -3,12 +3,6 @@ info:
   description: "Patients Profile Management"
   version: "1.0.0"
   title: "Patients Profile Management"
-  termsOfService: "http://swagger.io/terms/"
-  contact:
-    email: "apiteam@swagger.io"
-  license:
-    name: "Apache 2.0"
-    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
 tags:
 - name: "patients"
   description: "Everything about customers"
@@ -23,6 +17,33 @@ paths:
       summary: "Upsert multi patients"
       description: "Upsert multi patients"
       operationId: "upsertMultiPatients"
+      consumes:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "patient"
+        description: "List of patients"
+        required: true
+        schema:
+          type: array
+          items:
+            $ref: "#/definitions/Patient"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            type: "string"
+        400:
+          description: "Invalid input"
+        500:
+          description: "Internal server error"
+  /v1/patients:
+    post:
+      tags:
+      - "patients"
+      summary: "Upsert patient"
+      description: "Upsert patient"
+      operationId: "upsert"
       consumes:
       - "application/json"
       parameters:
@@ -104,7 +125,7 @@ paths:
         400:
           description: "Invalid input"
         500:
-          description: "server error"
+          description: "Internal server error"
 
   v1/patients/{id}/tests:
     get:
@@ -136,26 +157,22 @@ paths:
         400:
           description: "Invalid input"
         500:
-          description: "server error"
+          description: "Internal server error"
 definitions:
   Patient:
     type: "object"
     properties:
       id:
-        type: "number"
+        type: "string"
       MedicalTreatmentProfile:
         type: "array"
         items:
           $ref: "#/definitions/MedicalTreatmentProfile"
       personalInfo:
         $ref: "#/definitions/PersonalInfo"
-
-
   PersonalInfo:
     type: "object"
     properties:
-      id:
-        type: "number"
       fullName:
         type: "string"
         example: "Nguyen Minh Duc"
@@ -171,13 +188,9 @@ definitions:
       sex:
         type: "string"
         example: "M"
-
-
   MedicalTreatmentProfile:
     type: "object"
     properties:
-      id:
-        type: "number"
       createdDate:
         type: "date"
         example: "2018-11-30"
@@ -196,12 +209,9 @@ definitions:
         $ref: "#/definitions/Prescription"
       medicalTestResult:
         $ref: "#/definitions/MedicalTestResult"
-
   MedicalTestResult:
     type: "object"
     properties:
-      id:
-        type: "number"
       bloodType:
         type: "string"
         example: "O"
@@ -216,13 +226,10 @@ definitions:
         items:
           type: "string"
           example: "panadol extra"
-
   Prescription:
     type: "object"
     properties:
-      id:
-        type: "number"
-      recentUsed:
+      recentlyUsed:
         type: "array"
         items:
           $ref: "#/definitions/Medicine"
@@ -230,31 +237,12 @@ definitions:
         type: "array"
         items:
           $ref: "#/definitions/Medicine"
-
-
   Medicine:
     type: "object"
     properties:
-      id:
-        type: "number"
       name:
         type: "string"
         example: "Paracetamol 500"
       quantity:
         type: "integer"
         example: "10"
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

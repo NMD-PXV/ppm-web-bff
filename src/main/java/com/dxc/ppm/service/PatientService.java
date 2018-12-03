@@ -38,7 +38,7 @@ public class PatientService {
 
             List<GivenMedicine> medicinesUsedEntityList = new ArrayList<>();
 
-
+            List<MedicineEntity> recentlyUsedEntityList = new ArrayList<>();
             for(int j = 0; j < medicalTreatmentProfileList.get(i).getPrescription().getBeingUsed().size(); j++) {
                 GivenMedicine givenMedicine = new GivenMedicine();
                 givenMedicine.setName(medicalTreatmentProfileList.get(i).getPrescription().getBeingUsed().get(j).getName());
@@ -48,12 +48,12 @@ public class PatientService {
             }
 
 
-            for(int j = 0; j < medicalTreatmentProfileList.get(i).getPrescription().getRecentUsed().size(); j++) {
-                GivenMedicine givenMedicine = new GivenMedicine();
-                givenMedicine.setName(medicalTreatmentProfileList.get(i).getPrescription().getRecentUsed().get(j).getName());
-                givenMedicine.setAmount(medicalTreatmentProfileList.get(i).getPrescription().getRecentUsed().get(j).getQuantity());
-                givenMedicine.setType("recentlyUsed");
-                medicinesUsedEntityList.add(givenMedicine);
+
+            for(int j = 0; j < medicalTreatmentProfileList.get(i).getPrescription().getRecentlyUsed().size(); j++) {
+                MedicineEntity medicineEntity = new MedicineEntity();
+                medicineEntity.setName(medicalTreatmentProfileList.get(i).getPrescription().getRecentlyUsed().get(j).getName());
+                medicineEntity.setQuantity(medicalTreatmentProfileList.get(i).getPrescription().getRecentlyUsed().get(j).getQuantity());
+                recentlyUsedEntityList.add(medicineEntity);
             }
 
             PrescriptionEntity prescriptionEntity = new PrescriptionEntity();

@@ -6,7 +6,6 @@ import java.util.Date;
 @Entity
 @Table(name = "MedicalTreatmentProfileEntity")
 public class MedicalTreatmentProfileEntity {
-
     @Id
     @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.AUTO)
