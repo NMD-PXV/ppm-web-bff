@@ -24,6 +24,9 @@ public class PatientEntity {
     @JoinColumn(name = "PATIENT_ID", referencedColumnName = "PATIENT_ID", insertable = false, updatable = false)
     private List<MedicalTreatmentProfileEntity> medicalTreatmentProfileEntities;
 
+    @Column(name = "DELETED")
+    private boolean deleted;
+
     public Long getId() {
         return id;
     }
@@ -32,6 +35,13 @@ public class PatientEntity {
         this.id = id;
     }
 
+    public String getPatient_id() {
+        return patient_id;
+    }
+
+    public void setPatient_id(String patient_id) {
+        this.patient_id = patient_id;
+    }
 
     public PersonalInfoEntity getPersonalInfoEntity() {
         return personalInfoEntity;
@@ -47,5 +57,13 @@ public class PatientEntity {
 
     public void setMedicalTreatmentProfileEntities(List<MedicalTreatmentProfileEntity> medicalTreatmentProfileEntities) {
         this.medicalTreatmentProfileEntities = medicalTreatmentProfileEntities;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 }

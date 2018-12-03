@@ -29,5 +29,19 @@ public class PrescriptionEntity {
         this.id = id;
     }
 
+    public MedicalTreatmentProfileEntity getMedicalTreatmentProfileEntity() {
+        return medicalTreatmentProfileEntity;
+    }
 
+    public void setMedicalTreatmentProfileEntity(MedicalTreatmentProfileEntity medicalTreatmentProfileEntity) {
+        this.medicalTreatmentProfileEntity = medicalTreatmentProfileEntity;
+    }
+
+    public List<GivenMedicine> getGivenMedicines() {
+        return givenMedicines;
+    }
+
+    public void setGivenMedicines(List<GivenMedicine> givenMedicines) {
+        this.givenMedicines = givenMedicines;
+    }
 }

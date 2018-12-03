@@ -6,7 +6,6 @@ import java.util.Date;
 @Entity
 @Table(name = "MedicalTreatmentProfileEntity")
 public class MedicalTreatmentProfileEntity {
-
     @Id
     @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -46,6 +45,14 @@ public class MedicalTreatmentProfileEntity {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getPatient_id() {
+        return patient_id;
+    }
+
+    public void setPatient_id(String patient_id) {
+        this.patient_id = patient_id;
     }
 
     public Date getCreatedDate() {
@@ -94,5 +101,13 @@ public class MedicalTreatmentProfileEntity {
 
     public void setMedicalTestResultEntity(MedicalTestResultEntity medicalTestResultEntity) {
         this.medicalTestResultEntity = medicalTestResultEntity;
+    }
+
+    public PatientEntity getPatientEntity() {
+        return patientEntity;
+    }
+
+    public void setPatientEntity(PatientEntity patientEntity) {
+        this.patientEntity = patientEntity;
     }
 }

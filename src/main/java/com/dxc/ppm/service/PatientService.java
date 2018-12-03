@@ -48,10 +48,10 @@ public class PatientService {
             }
 
 
-            for(int j = 0; j < medicalTreatmentProfileList.get(i).getPrescription().getRecentUsed().size(); j++) {
+            for(int j = 0; j < medicalTreatmentProfileList.get(i).getPrescription().getRecentlyUsed().size(); j++) {
                 MedicineEntity medicineEntity = new MedicineEntity();
-                medicineEntity.setName(medicalTreatmentProfileList.get(i).getPrescription().getRecentUsed().get(j).getName());
-                medicineEntity.setQuantity(medicalTreatmentProfileList.get(i).getPrescription().getRecentUsed().get(j).getQuantity());
+                medicineEntity.setName(medicalTreatmentProfileList.get(i).getPrescription().getRecentlyUsed().get(j).getName());
+                medicineEntity.setQuantity(medicalTreatmentProfileList.get(i).getPrescription().getRecentlyUsed().get(j).getQuantity());
                 recentlyUsedEntityList.add(medicineEntity);
             }
 
