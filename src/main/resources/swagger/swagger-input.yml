@@ -27,11 +27,11 @@ paths:
       - "application/json"
       parameters:
       - in: "body"
-        name: "json"
+        name: "patient"
         description: "List of patients"
         required: true
         schema:
-          type: "string"
+          $ref: "#/definitions/Patient"
       responses:
         200:
           description: "OK"
@@ -41,7 +41,7 @@ paths:
           description: "Invalid input"
         500:
           description: "Internal server error"
-         
+
   /v1/patients/{patientId}:
     get:
       tags:
@@ -61,24 +61,24 @@ paths:
         200:
           description: "OK"
           schema:
-            type: "string"
+            $ref: "#/definitions/Patient"
         400:
           description: "Invalid input"
         404:
-         description: "Patient not found"
+          description: "PatientEntity not found"
         500:
           description: "Internal server error"
-  
+
   v1/patients:
     get:
-      tags: 
+      tags:
       - "patients"
       summary: "get patient profiles"
       description: "get patient profiles by name, disease, medicine. If no query then return all patient profiles"
       operationId: "searchPatients"
       produces:
       - "application/json"
-      parameters: 
+      parameters:
       - in: "query"
         name: "name"
         type: "string"
@@ -98,22 +98,24 @@ paths:
         200:
           description: "profiles found"
           schema:
-            type: "string"
+            type: "array"
+            items:
+              $ref: "#/definitions/MedicalTreatmentProfile"
         400:
           description: "Invalid input"
         500:
           description: "server error"
-          
+
   v1/patients/{id}/tests:
     get:
-      tags: 
+      tags:
       - "patients"
       summary: "get info about patient be allergic to a specific medicine"
       description: "using id on path and query name to get info about patient be allergic to a specific medicine"
       operationId: "searchTest"
       produces:
       - "application/json"
-      parameters: 
+      parameters:
       - in: "path"
         name: "id"
         type: "string"
@@ -127,7 +129,132 @@ paths:
       responses:
         200:
           description: "Ok"
+          schema:
+            type: "array"
+            items:
+              type: "string"
         400:
           description: "Invalid input"
         500:
           description: "server error"
+definitions:
+  Patient:
+    type: "object"
+    properties:
+      id:
+        type: "number"
+      MedicalTreatmentProfile:
+        type: "array"
+        items:
+          $ref: "#/definitions/MedicalTreatmentProfile"
+      personalInfo:
+        $ref: "#/definitions/PersonalInfo"
+
+
+  PersonalInfo:
+    type: "object"
+    properties:
+      id:
+        type: "number"
+      fullName:
+        type: "string"
+        example: "Nguyen Minh Duc"
+      address:
+        type: "string"
+        example: "3/115 Binh Duong"
+      dob:
+        type: "date"
+        example: "1995-09-18"
+      pob:
+        type: "string"
+        example: "Binh Duong"
+      sex:
+        type: "string"
+        example: "M"
+
+
+  MedicalTreatmentProfile:
+    type: "object"
+    properties:
+      id:
+        type: "number"
+      createdDate:
+        type: "date"
+        example: "2018-11-30"
+      modifiedDate:
+        type: "date"
+        example: "2018-11-30"
+      doctor:
+        type: "string"
+        example: "Dr Strange"
+      diseasesHistory:
+        type: "array"
+        items:
+          type: "string"
+          example: "Flu"
+      prescription:
+        $ref: "#/definitions/Prescription"
+      medicalTestResult:
+        $ref: "#/definitions/MedicalTestResult"
+
+  MedicalTestResult:
+    type: "object"
+    properties:
+      id:
+        type: "number"
+      bloodType:
+        type: "string"
+        example: "O"
+      xRay:
+        type: "string"
+        example: "normal"
+      ultraSound:
+        type: "string"
+        example: "normal"
+      allergicMedicines:
+        type: "array"
+        items:
+          type: "string"
+          example: "panadol extra"
+
+  Prescription:
+    type: "object"
+    properties:
+      id:
+        type: "number"
+      recentUsed:
+        type: "array"
+        items:
+          $ref: "#/definitions/Medicine"
+      beingUsed:
+        type: "array"
+        items:
+          $ref: "#/definitions/Medicine"
+
+
+  Medicine:
+    type: "object"
+    properties:
+      id:
+        type: "number"
+      name:
+        type: "string"
+        example: "Paracetamol 500"
+      quantity:
+        type: "integer"
+        example: "10"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
