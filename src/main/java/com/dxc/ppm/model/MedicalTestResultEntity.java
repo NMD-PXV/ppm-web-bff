@@ -66,4 +66,12 @@ public class MedicalTestResultEntity {
     public void setAllergicMedicines(String allergicMedicines) {
         this.allergicMedicines = allergicMedicines;
     }
+
+    public MedicalTreatmentProfileEntity getMedicalTreatmentProfileEntity() {
+        return medicalTreatmentProfileEntity;
+    }
+
+    public void setMedicalTreatmentProfileEntity(MedicalTreatmentProfileEntity medicalTreatmentProfileEntity) {
+        this.medicalTreatmentProfileEntity = medicalTreatmentProfileEntity;
+    }
 }

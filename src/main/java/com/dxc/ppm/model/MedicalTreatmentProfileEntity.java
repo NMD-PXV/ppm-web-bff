@@ -36,7 +36,7 @@ public class MedicalTreatmentProfileEntity {
     @JoinColumn(name = "MEDICAL_TEST_RESULT_ID")
     private MedicalTestResultEntity medicalTestResultEntity;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "PATIENT_ID", referencedColumnName = "PATIENT_ID", insertable = false, updatable = false)
     private PatientEntity patientEntity;
 
@@ -46,6 +46,14 @@ public class MedicalTreatmentProfileEntity {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getPatient_id() {
+        return patient_id;
+    }
+
+    public void setPatient_id(String patient_id) {
+        this.patient_id = patient_id;
     }
 
     public Date getCreatedDate() {
@@ -94,5 +102,13 @@ public class MedicalTreatmentProfileEntity {
 
     public void setMedicalTestResultEntity(MedicalTestResultEntity medicalTestResultEntity) {
         this.medicalTestResultEntity = medicalTestResultEntity;
+    }
+
+    public PatientEntity getPatientEntity() {
+        return patientEntity;
+    }
+
+    public void setPatientEntity(PatientEntity patientEntity) {
+        this.patientEntity = patientEntity;
     }
 }

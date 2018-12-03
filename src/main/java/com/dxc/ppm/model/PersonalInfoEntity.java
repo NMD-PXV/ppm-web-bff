@@ -43,6 +43,14 @@ public class PersonalInfoEntity {
         this.id = id;
     }
 
+    public String getPatient_id() {
+        return patient_id;
+    }
+
+    public void setPatient_id(String patient_id) {
+        this.patient_id = patient_id;
+    }
+
     public String getFullName() {
         return fullName;
     }
@@ -81,5 +89,13 @@ public class PersonalInfoEntity {
 
     public void setSex(String sex) {
         this.sex = sex;
+    }
+
+    public PatientEntity getPatientEntity() {
+        return patientEntity;
+    }
+
+    public void setPatientEntity(PatientEntity patientEntity) {
+        this.patientEntity = patientEntity;
     }
 }

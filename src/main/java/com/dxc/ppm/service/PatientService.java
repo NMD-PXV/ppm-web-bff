@@ -16,7 +16,7 @@ public class PatientService {
     @Autowired
     private PatientRepository patientRepository;
 
-    public String upsertMultiPatients(Patient patient) {
+    public String upsert(Patient patient) {
 
         PatientEntity patientEntity = new PatientEntity();
 
@@ -36,30 +36,30 @@ public class PatientService {
 
             MedicalTreatmentProfileEntity medicalTreatmentProfileEntity = new MedicalTreatmentProfileEntity();
 
-            List<MedicineEntity> beingUsedEntityList = new ArrayList<>();
-            List<MedicineEntity> recentlyUsedEntityList = new ArrayList<>();
+            List<GivenMedicine> medicinesUsedEntityList = new ArrayList<>();
 
 
             for(int j = 0; j < medicalTreatmentProfileList.get(i).getPrescription().getBeingUsed().size(); j++) {
-                MedicineEntity medicineEntity = new MedicineEntity();
-                medicineEntity.setName(medicalTreatmentProfileList.get(i).getPrescription().getBeingUsed().get(j).getName());
-                medicineEntity.setQuantity(medicalTreatmentProfileList.get(i).getPrescription().getBeingUsed().get(j).getQuantity());
-                beingUsedEntityList.add(medicineEntity);
+                GivenMedicine givenMedicine = new GivenMedicine();
+                givenMedicine.setName(medicalTreatmentProfileList.get(i).getPrescription().getBeingUsed().get(j).getName());
+                givenMedicine.setAmount(medicalTreatmentProfileList.get(i).getPrescription().getBeingUsed().get(j).getQuantity());
+                givenMedicine.setType("beingUsed");
+                medicinesUsedEntityList.add(givenMedicine);
             }
 
 
             for(int j = 0; j < medicalTreatmentProfileList.get(i).getPrescription().getRecentUsed().size(); j++) {
-                MedicineEntity medicineEntity = new MedicineEntity();
-                medicineEntity.setName(medicalTreatmentProfileList.get(i).getPrescription().getRecentUsed().get(j).getName());
-                medicineEntity.setQuantity(medicalTreatmentProfileList.get(i).getPrescription().getRecentUsed().get(j).getQuantity());
-                recentlyUsedEntityList.add(medicineEntity);
+                GivenMedicine givenMedicine = new GivenMedicine();
+                givenMedicine.setName(medicalTreatmentProfileList.get(i).getPrescription().getRecentUsed().get(j).getName());
+                givenMedicine.setAmount(medicalTreatmentProfileList.get(i).getPrescription().getRecentUsed().get(j).getQuantity());
+                givenMedicine.setType("recentlyUsed");
+                medicinesUsedEntityList.add(givenMedicine);
             }
 
             PrescriptionEntity prescriptionEntity = new PrescriptionEntity();
-//            prescriptionEntity.setBeingUsed(beingUsedEntityList);
-//            prescriptionEntity.setRecentlyUsed(recentlyUsedEntityList);
+            prescriptionEntity.setGivenMedicines(medicinesUsedEntityList);
 
-//            medicalTreatmentProfileEntity.setPrescription(prescriptionEntity);
+            medicalTreatmentProfileEntity.setPrescription(prescriptionEntity);
 
             medicalTreatmentProfileEntity.setCreatedDate(new Date());
             medicalTreatmentProfileEntity.setModifiedDate(new Date());

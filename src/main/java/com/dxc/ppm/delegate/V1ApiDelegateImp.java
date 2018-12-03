@@ -34,6 +34,6 @@ public class V1ApiDelegateImp implements V1ApiDelegate {
 
     @Override
     public ResponseEntity<String> upsertMultiPatients(Patient patient) {
-        return ResponseEntity.ok(patientService.upsertMultiPatients(patient));
+        return ResponseEntity.ok(patientService.upsert(patient));
     }
 }
