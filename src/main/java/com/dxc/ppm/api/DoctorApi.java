@@ -9,6 +9,7 @@ import java.util.List;
 
 @FeignClient(name = "DoctorApi", url = "${DoctorApi.url}")
 public interface DoctorApi {
+
     @PostMapping("/v1/patients/{id}/profiles")
     String upsertProfiles(@PathVariable("id") String patientId,
                           @RequestBody List<MedicalTreatmentProfile> profiles);
@@ -23,4 +24,6 @@ public interface DoctorApi {
 
     @GetMapping("/v1/patients/{id}/profiles")
     List<MedicalTreatmentProfile> searchProfilesByPatientId(@PathVariable("id") String patientId);
+
+
 }

@@ -19,7 +19,7 @@ public class V1ApiDelegateImp implements V1ApiDelegate {
 
     @Override
     public ResponseEntity<Patient> readPatientById(String patientId) {
-        return null;
+        return ResponseEntity.ok(patientService.readPatientById(patientId));
     }
 
     @Override

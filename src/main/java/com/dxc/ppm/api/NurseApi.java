@@ -2,10 +2,7 @@ package com.dxc.ppm.api;
 
 import com.dxc.ppm.api.model.PersonalInfo;
 import org.springframework.cloud.netflix.feign.FeignClient;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -19,4 +16,7 @@ public interface NurseApi {
 
     @GetMapping("/v1/patients/{patientId}/info")
     PersonalInfo readPatientInfoById(@PathVariable("patientId") String patientId);
+
+    @GetMapping("v1/patients/info/names")
+    List<String> searchPatientIdsByName(@RequestParam("patientName") String patientName);
 }

@@ -173,6 +173,8 @@ definitions:
   PersonalInfo:
     type: "object"
     properties:
+      patientId:
+        type: "string"
       fullName:
         type: "string"
         example: "Nguyen Minh Duc"
@@ -192,20 +194,32 @@ definitions:
   MedicalTreatmentProfile:
     type: "object"
     properties:
+      id:
+        type: "number"
+        format: "long"
+      patientId:
+        type: "string"
       createdDate:
-        type: "date"
+        type: "string"
+        format: "date"
         example: "2018-11-30"
       modifiedDate:
-        type: "date"
+        type: "string"
+        format: "date"
         example: "2018-11-30"
       doctor:
         type: "string"
         example: "Dr Strange"
+      doctorUpdated:
+        type: "string"
       diseasesHistory:
         type: "array"
         items:
           type: "string"
-          example: "Flu"
+        example:
+        - "Flu"
+        - "H1N1"
+        - "STD"
       prescription:
         $ref: "#/definitions/Prescription"
       medicalTestResult:
@@ -213,6 +227,9 @@ definitions:
   MedicalTestResult:
     type: "object"
     properties:
+      id:
+        type: "number"
+        format: "long"
       bloodType:
         type: "string"
         example: "O"
@@ -226,21 +243,29 @@ definitions:
         type: "array"
         items:
           type: "string"
-          example: "panadol extra"
+        example:
+        - "panadol extra"
+        - "paracetamol"
   Prescription:
     type: "object"
     properties:
+      id:
+        type: "number"
+        format: "long"
       recentlyUsed:
         type: "array"
         items:
-          $ref: "#/definitions/Medicine"
+          $ref: "#/definitions/GivenMedicine"
       beingUsed:
         type: "array"
         items:
-          $ref: "#/definitions/Medicine"
-  Medicine:
+          $ref: "#/definitions/GivenMedicine"
+  GivenMedicine:
     type: "object"
     properties:
+      id:
+        type: "number"
+        format: "long"
       name:
         type: "string"
         example: "Paracetamol 500"

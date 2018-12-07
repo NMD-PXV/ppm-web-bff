@@ -21,7 +21,15 @@ public class PatientService {
     public String upsert(Patient patient) {
         String patientId = nurseApi.upsert(patient.getPersonalInfo());
         doctorApi.upsertProfiles(patientId, patient.getMedicalTreatmentProfile());
-
         return patientId;
     }
+
+    public Patient readPatientById(String patientId) {
+        Patient patient = new Patient();
+        patient.setId(patientId);
+        patient.setPersonalInfo(nurseApi.readPatientInfoById(patientId));
+        patient.setMedicalTreatmentProfile(doctorApi.searchProfilesByPatientId(patientId));
+        return patient;
+    }
+
 }
