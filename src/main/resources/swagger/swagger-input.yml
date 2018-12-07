@@ -180,7 +180,8 @@ definitions:
         type: "string"
         example: "3/115 Binh Duong"
       dob:
-        type: "date"
+        type: "string"
+        format: "date"
         example: "1995-09-18"
       pob:
         type: "string"

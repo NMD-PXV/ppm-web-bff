@@ -4,6 +4,7 @@ import com.dxc.ppm.api.model.MedicalTreatmentProfile;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
+import javax.websocket.server.PathParam;
 import java.util.List;
 
 @FeignClient(name = "DoctorApi", url = "${DoctorApi.url}")
@@ -19,4 +20,7 @@ public interface DoctorApi {
 
     @GetMapping("/v1/patients/{id}/profiles/tests")
     String checkAllergic(@RequestParam("name") String medicineName);
+
+    @GetMapping("/v1/patients/{id}/profiles")
+    List<MedicalTreatmentProfile> searchProfilesByPatientId(@PathVariable("id") String patientId);
 }
