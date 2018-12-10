@@ -20,7 +20,7 @@ public interface DoctorApi {
                                                  @RequestParam("medicine") String medicineName);
 
     @GetMapping("/v1/patients/{id}/profiles/tests")
-    String checkAllergic(@RequestParam("name") String medicineName);
+    String checkAllergic(@PathVariable("id") String patientId, @RequestParam("name") String medicineName);
 
     @GetMapping("/v1/patients/{id}/profiles")
     List<MedicalTreatmentProfile> searchProfilesByPatientId(@PathVariable("id") String patientId);

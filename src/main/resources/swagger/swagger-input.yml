@@ -21,7 +21,7 @@ paths:
       - "application/json"
       parameters:
       - in: "body"
-        name: "patient"
+        name: "patients"
         description: "List of patients"
         required: true
         schema:
@@ -134,8 +134,6 @@ paths:
       summary: "get info about patient be allergic to a specific medicine"
       description: "using id on path and query name to get info about patient be allergic to a specific medicine"
       operationId: "searchTest"
-      produces:
-      - "application/json"
       parameters:
       - in: "path"
         name: "id"
@@ -151,9 +149,7 @@ paths:
         200:
           description: "Ok"
           schema:
-            type: "array"
-            items:
-              type: "string"
+            type: "string"
         400:
           description: "Invalid input"
         500:

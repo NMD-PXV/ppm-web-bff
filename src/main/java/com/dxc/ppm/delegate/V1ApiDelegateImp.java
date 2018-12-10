@@ -28,8 +28,8 @@ public class V1ApiDelegateImp implements V1ApiDelegate {
     }
 
     @Override
-    public ResponseEntity<List<String>> searchTest(String id, String name) {
-        return null;
+    public ResponseEntity<String> searchTest(String id, String name) {
+        return ResponseEntity.ok(patientService.searchTest(id, name));
     }
 
     @Override
@@ -38,7 +38,7 @@ public class V1ApiDelegateImp implements V1ApiDelegate {
     }
 
     @Override
-    public ResponseEntity<String> upsertMultiPatients(List<Patient> patient) {
-        return null;
+    public ResponseEntity<String> upsertMultiPatients(List<Patient> patients) {
+        return ResponseEntity.ok(patientService.upsertMultiPatients(patients));
     }
 }

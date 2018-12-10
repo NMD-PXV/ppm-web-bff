@@ -11,9 +11,6 @@ public interface NurseApi {
     @PostMapping("/v1/patients/info")
     String upsert(@RequestBody PersonalInfo info);
 
-    @PostMapping("/v1/patients/info/bulk")
-    String upsertMultiPatientInfos(@RequestBody List<PersonalInfo> infos);
-
     @GetMapping("/v1/patients/{patientId}/info")
     PersonalInfo readPatientInfoById(@PathVariable("patientId") String patientId);
 
