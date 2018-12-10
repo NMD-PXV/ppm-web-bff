@@ -15,5 +15,5 @@ public interface NurseApi {
     PersonalInfo readPatientInfoById(@PathVariable("patientId") String patientId);
 
     @GetMapping("v1/patients/info/names")
-    List<String> searchPatientIdsByName(@RequestParam("patientName") String patientName);
+    List<PersonalInfo> searchPatientsByName(@RequestParam("patientName") String patientName);
 }

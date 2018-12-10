@@ -42,14 +42,14 @@ public class PatientService {
 
     public String searchTest(String patientId, String medicineName) {
         checkPatientId(patientId);
-        if(medicineName.isEmpty()) throw new WebBFFException(MEDICINE_NAME_IS_NULL);
+        if (medicineName.isEmpty()) throw new WebBFFException(MEDICINE_NAME_IS_NULL);
 
         return doctorApi.checkAllergic(patientId, medicineName);
     }
 
-    public String upsertMultiPatients (List<Patient> patients) {
+    public String upsertMultiPatients(List<Patient> patients) {
         List<String> results = new ArrayList<>();
-        for(Patient patient: patients) {
+        for (Patient patient : patients) {
             checkInputPatient(patient);
             String patientId = nurseApi.upsert(patient.getPersonalInfo());
             results.add(doctorApi.upsertProfiles(patientId, patient.getMedicalTreatmentProfile()));
@@ -59,30 +59,50 @@ public class PatientService {
 
 
     public void checkPatientId(String patientId) {
-        if(patientId.isEmpty() || patientId.contains(" "))
+        if (patientId.isEmpty() || patientId.contains(" "))
             throw new WebBFFException(PATIENT_ID_IS_NULL_OR_CONTAINS_SPACE, patientId);
     }
 
     public void checkInputPatient(Patient patient) {
-        if(patient.getPersonalInfo().getFullName().isEmpty()
+        if (patient.getPersonalInfo().getFullName().isEmpty()
                 || patient.getPersonalInfo().getAddress().isEmpty()
                 || patient.getPersonalInfo().getPob().isEmpty()
                 || patient.getPersonalInfo().getSex().isEmpty()
                 || patient.getPersonalInfo().getDob().toString().isEmpty())
             throw new WebBFFException(INVALID_INPUT_PATIENT_INFO, patient.getPersonalInfo());
 
-        for (MedicalTreatmentProfile medicalProfile: patient.getMedicalTreatmentProfile()) {
-            if(medicalProfile.getDoctor().isEmpty() || medicalProfile.getCreatedDate().toString().isEmpty())
+        for (MedicalTreatmentProfile medicalProfile : patient.getMedicalTreatmentProfile()) {
+            if (medicalProfile.getDoctor().isEmpty() || medicalProfile.getCreatedDate().toString().isEmpty())
                 throw new WebBFFException(INVALID_INPUT_PATIENT_MEDICAL_PROFILE, medicalProfile);
         }
     }
 
 
     public List<Patient> searchPatients(String name, String disease, String medicine) {
-        List<String> patientIds = nurseApi.searchPatientIdsByName(name);
-        doctorApi.searchTreatmentProfiles(patientIds, disease, medicine);
-
-        return null;
+        List<PersonalInfo> infos = nurseApi.searchPatientsByName(name);
+        List<String> patientIds = infos.stream().map(PersonalInfo::getPatientId).collect(Collectors.toList());
+        List<MedicalTreatmentProfile> profiles = doctorApi.searchTreatmentProfiles(patientIds, disease, medicine);
+        List<Patient> patients = new ArrayList<>();
+        Map<String, List<MedicalTreatmentProfile>> map = new HashMap<>();
+        for (PersonalInfo i : infos) {
+            Patient patient = new Patient();
+            patient.setId(i.getPatientId());
+            patient.setPersonalInfo(i);
+            patients.add(patient);
+        }
+        for (MedicalTreatmentProfile p : profiles) {
+            if (!map.containsKey(p.getPatientId()))
+                map.put(p.getPatientId(), Collections.singletonList(p));
+            else
+                map.get(p.getPatientId()).add(p);
+        }
+        for (Map.Entry<String, List<MedicalTreatmentProfile>> e : map.entrySet()) {
+            patients.stream().
+                    filter(p -> p.getId().equals(e.getKey())).
+                    findAny().
+                    get().
+                    setMedicalTreatmentProfile(e.getValue());
+        }
+        return patients;
     }
-
 }
