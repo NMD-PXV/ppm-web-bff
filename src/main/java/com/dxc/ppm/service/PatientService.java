@@ -47,10 +47,6 @@ public class PatientService {
         return doctorApi.checkAllergic(patientId, medicineName);
     }
 
-    public List<MedicalTreatmentProfile> searchPatients(String name, String disease, String medicine) {
-      return null;
-    }
-
     public String upsertMultiPatients (List<Patient> patients) {
         List<String> results = new ArrayList<>();
         for(Patient patient: patients) {
@@ -79,6 +75,14 @@ public class PatientService {
             if(medicalProfile.getDoctor().isEmpty() || medicalProfile.getCreatedDate().toString().isEmpty())
                 throw new WebBFFException(INVALID_INPUT_PATIENT_MEDICAL_PROFILE, medicalProfile);
         }
+    }
+
+
+    public List<Patient> searchPatients(String name, String disease, String medicine) {
+        List<String> patientIds = nurseApi.searchPatientIdsByName(name);
+        doctorApi.searchTreatmentProfiles(patientIds, disease, medicine);
+
+        return null;
     }
 
 }
