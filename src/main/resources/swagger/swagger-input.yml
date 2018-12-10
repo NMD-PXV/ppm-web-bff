@@ -168,7 +168,7 @@ definitions:
     properties:
       patientId:
         type: "string"
-      fullName:
+      fullname:
         type: "string"
         example: "Nguyen Minh Duc"
       address:

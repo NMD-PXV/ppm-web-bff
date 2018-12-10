@@ -64,7 +64,7 @@ public class PatientService {
     }
 
     public void checkInputPatient(Patient patient) {
-        if (patient.getPersonalInfo().getFullName().isEmpty()
+        if (patient.getPersonalInfo().getFullname().isEmpty()
                 || patient.getPersonalInfo().getAddress().isEmpty()
                 || patient.getPersonalInfo().getPob().isEmpty()
                 || patient.getPersonalInfo().getSex().isEmpty()
