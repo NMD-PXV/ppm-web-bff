@@ -32,4 +32,10 @@ public class PatientService {
         return patient;
     }
 
+    public List<Patient> searchPatients(String name, String disease, String medicine) {
+        List<String> patientIds = nurseApi.searchPatientIdsByName(name);
+        doctorApi.searchTreatmentProfiles(patientIds, disease, medicine);
+
+        return null;
+    }
 }

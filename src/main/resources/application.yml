@@ -7,3 +7,5 @@ spring:
   jackson.serialization.WRITE_DATES_AS_TIMESTAMPS: false
 DoctorApi.url: http://localhost:8080
 NurseApi.url: http://localhost:7070
+server:
+  port: 9090

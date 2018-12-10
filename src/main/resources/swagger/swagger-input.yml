@@ -62,6 +62,41 @@ paths:
           description: "Invalid input"
         500:
           description: "Internal server error"
+    get:
+      tags:
+        - "patients"
+      summary: "get patient profiles"
+      description: "get patient profiles by name, disease, medicine. If no query then return all patient profiles"
+      operationId: "searchPatients"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "query"
+          name: "name"
+          type: "string"
+          description: "name of patient"
+          required: false
+        - in: "query"
+          name: "disease"
+          type: "string"
+          description: "name of disease"
+          required: false
+        - in: "query"
+          name: "medicine"
+          type: "string"
+          description: "name of medicine"
+          required: false
+      responses:
+        200:
+          description: "profiles found"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Patient"
+        400:
+          description: "Invalid input"
+        500:
+          description: "Internal server error"
 
   /v1/patients/{patientId}:
     get:
@@ -89,44 +124,6 @@ paths:
           description: "PatientEntity not found"
         500:
           description: "Internal server error"
-
-  v1/patients:
-    get:
-      tags:
-      - "patients"
-      summary: "get patient profiles"
-      description: "get patient profiles by name, disease, medicine. If no query then return all patient profiles"
-      operationId: "searchPatients"
-      produces:
-      - "application/json"
-      parameters:
-      - in: "query"
-        name: "name"
-        type: "string"
-        description: "name of patient"
-        required: false
-      - in: "query"
-        name: "disease"
-        type: "string"
-        description: "name of disease"
-        required: false
-      - in: "query"
-        name: "medicine"
-        type: "string"
-        description: "name of medicine"
-        required: false
-      responses:
-        200:
-          description: "profiles found"
-          schema:
-            type: "array"
-            items:
-              $ref: "#/definitions/MedicalTreatmentProfile"
-        400:
-          description: "Invalid input"
-        500:
-          description: "Internal server error"
-
   v1/patients/{id}/tests:
     get:
       tags:

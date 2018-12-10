@@ -15,7 +15,7 @@ public interface DoctorApi {
                           @RequestBody List<MedicalTreatmentProfile> profiles);
 
     @GetMapping("/v1/patients")
-    List<MedicalTreatmentProfile> searchTreatmentProfiles(@RequestParam("name") String patientName,
+    List<MedicalTreatmentProfile> searchTreatmentProfiles(@RequestParam("ids") List<String> patientIds,
                                                  @RequestParam("disease") String disease,
                                                  @RequestParam("medicine") String medicineName);
 
