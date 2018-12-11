@@ -1,14 +1,14 @@
 package com.dxc.ppm.handler;
 
-import com.dxc.ppm.exception.WebBFFException;
+import com.dxc.ppm.exception.BffException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
-public class WebBFFExceptionHandler {
-    @ExceptionHandler(WebBFFException.class)
-    public ResponseEntity<String> patientExceptionHandler(WebBFFException ex) {
+public class BffExceptionHandler {
+    @ExceptionHandler(BffException.class)
+    public ResponseEntity<String> patientExceptionHandler(BffException ex) {
         String message = ex.getResponse().name();
         return new ResponseEntity<>(message, ex.getResponse().getHttpStatus());
     }

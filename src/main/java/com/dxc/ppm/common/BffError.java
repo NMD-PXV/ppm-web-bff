@@ -2,7 +2,7 @@ package com.dxc.ppm.common;
 
 import org.springframework.http.HttpStatus;
 
-public enum  WebBFFStorageError {
+public enum BffError {
 
         PATIENT_ID_IS_NULL_OR_CONTAINS_SPACE(0, HttpStatus.NOT_FOUND),
         INVALID_INPUT_PATIENT_INFO(1, HttpStatus.BAD_REQUEST),
@@ -12,7 +12,7 @@ public enum  WebBFFStorageError {
         private final int code;
         private final HttpStatus httpStatus;
 
-        WebBFFStorageError(int code, HttpStatus httpStatus) {
+        BffError(int code, HttpStatus httpStatus) {
             this.code = code;
             this.httpStatus = httpStatus;
         }

@@ -1,18 +1,19 @@
 package com.dxc.ppm.service;
 
+import com.dxc.ppm.api.AdminApi;
 import com.dxc.ppm.api.DoctorApi;
 import com.dxc.ppm.api.NurseApi;
 import com.dxc.ppm.api.model.*;
-import com.dxc.ppm.exception.WebBFFException;
-import io.swagger.util.Json;
+import com.dxc.ppm.exception.BffException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static com.dxc.ppm.common.WebBFFStorageError.*;
+import static com.dxc.ppm.common.BffError.*;
 
 @Service
 public class PatientService {
@@ -21,6 +22,9 @@ public class PatientService {
 
     @Autowired
     private DoctorApi doctorApi;
+
+    @Autowired
+    private AdminApi adminApi;
 
     //TODO write exception
 
@@ -42,7 +46,7 @@ public class PatientService {
 
     public String searchTest(String patientId, String medicineName) {
         checkPatientId(patientId);
-        if (medicineName.isEmpty()) throw new WebBFFException(MEDICINE_NAME_IS_NULL);
+        if (medicineName.isEmpty()) throw new BffException(MEDICINE_NAME_IS_NULL);
 
         return doctorApi.checkAllergic(patientId, medicineName);
     }
@@ -60,7 +64,7 @@ public class PatientService {
 
     public void checkPatientId(String patientId) {
         if (patientId.isEmpty() || patientId.contains(" "))
-            throw new WebBFFException(PATIENT_ID_IS_NULL_OR_CONTAINS_SPACE, patientId);
+            throw new BffException(PATIENT_ID_IS_NULL_OR_CONTAINS_SPACE, patientId);
     }
 
     public void checkInputPatient(Patient patient) {
@@ -70,17 +74,21 @@ public class PatientService {
                 || patient.getPersonalInfo().getSex().isEmpty()
                 || patient.getPersonalInfo().getDob().toString().isEmpty()
         )
-            throw new WebBFFException(INVALID_INPUT_PATIENT_INFO, patient.getPersonalInfo());
+            throw new BffException(INVALID_INPUT_PATIENT_INFO, patient.getPersonalInfo());
 
         for (MedicalTreatmentProfile medicalProfile : patient.getMedicalTreatmentProfile()) {
             if (medicalProfile.getDoctor().isEmpty() || medicalProfile.getCreatedDate().toString().isEmpty())
-                throw new WebBFFException(INVALID_INPUT_PATIENT_MEDICAL_PROFILE, medicalProfile);
+                throw new BffException(INVALID_INPUT_PATIENT_MEDICAL_PROFILE, medicalProfile);
         }
     }
 
     public List<Patient> searchPatients(String name, String disease, String medicine) {
         List<PersonalInfo> infos = nurseApi.searchPatientsByName(name);
         List<String> patientIds = infos.stream().map(PersonalInfo::getPatientId).collect(Collectors.toList());
+        List<String> isNotDeletedIds = adminApi.getIsNotDeletedIds(patientIds);
+//        if (isNotDeletedIds.isEmpty())
+
+//        patientIds.retainAll();
         List<MedicalTreatmentProfile> profiles = doctorApi.searchTreatmentProfiles(patientIds, disease, medicine);
 
         List<Patient> patients = new ArrayList<>();
