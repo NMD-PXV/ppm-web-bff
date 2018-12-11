@@ -51,14 +51,14 @@ public class PatientService {
         return doctorApi.checkAllergic(patientId, medicineName);
     }
 
-    public String upsertMultiPatients(List<Patient> patients) {
+    public List<String> upsertMultiPatients(List<Patient> patients) {
         List<String> results = new ArrayList<>();
         for (Patient patient : patients) {
             checkInputPatient(patient);
             String patientId = nurseApi.upsert(patient.getPersonalInfo());
             results.add(doctorApi.upsertProfiles(patientId, patient.getMedicalTreatmentProfile()));
         }
-        return results.stream().collect(Collectors.joining(", ", "[", "]"));
+        return results;
     }
 
 

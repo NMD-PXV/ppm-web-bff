@@ -32,7 +32,9 @@ paths:
         200:
           description: "OK"
           schema:
-            type: "string"
+            type: "array"
+            items:
+              type: "string"
         400:
           description: "Invalid input"
         500:
