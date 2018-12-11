@@ -32,6 +32,7 @@ public class PatientService {
         checkInputPatient(patient);
         String patientId = nurseApi.upsert(patient.getPersonalInfo());
         doctorApi.upsertProfiles(patientId, patient.getMedicalTreatmentProfile());
+        adminApi.addPatients(Collections.singletonList(patientId));
         return patientId;
     }
 
@@ -58,6 +59,7 @@ public class PatientService {
             String patientId = nurseApi.upsert(patient.getPersonalInfo());
             results.add(doctorApi.upsertProfiles(patientId, patient.getMedicalTreatmentProfile()));
         }
+        adminApi.addPatients(results);
         return results;
     }
 
@@ -112,5 +114,9 @@ public class PatientService {
                     setMedicalTreatmentProfile(e.getValue());
         }
         return patients;
+    }
+
+    public String deletePatientProfiles(List<String> patientIds){
+        return adminApi.deletePatientProfiles(patientIds);
     }
 }

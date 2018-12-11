@@ -24,6 +24,4 @@ public interface DoctorApi {
 
     @GetMapping("/v1/patients/{id}/profiles")
     List<MedicalTreatmentProfile> searchProfilesByPatientId(@PathVariable("id") String patientId);
-
-
 }

@@ -18,6 +18,11 @@ public class V1ApiDelegateImp implements V1ApiDelegate {
 
 
     @Override
+    public ResponseEntity<String> deletePatientProfiles(List<String> patientIds) {
+        return ResponseEntity.ok(patientService.deletePatientProfiles(patientIds));
+    }
+
+    @Override
     public ResponseEntity<Patient> readPatientById(String patientId) {
         return ResponseEntity.ok(patientService.readPatientById(patientId));
     }

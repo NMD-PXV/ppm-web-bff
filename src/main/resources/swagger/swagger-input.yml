@@ -99,6 +99,32 @@ paths:
           description: "Invalid input"
         500:
           description: "Internal server error"
+    delete:
+      tags:
+        - "patients"
+      summary: "delete patients"
+      description: "delete patiens by ids of patients"
+      operationId: "deletePatientProfiles"
+      consumes:
+        - "application/json; text/plain; charset=utf-8"
+      parameters:
+        - in: "body"
+          name: "patientIds"
+          required: true
+          description: "list id of patient profiles"
+          schema:
+            type: "array"
+            items:
+              type: "string"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            type: "string"
+        400:
+          description: "Invalid input"
+        500:
+          description: "Internal server error"
 
   /v1/patients/{patientId}:
     get:
