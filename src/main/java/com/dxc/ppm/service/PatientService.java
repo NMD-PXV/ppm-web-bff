@@ -86,9 +86,8 @@ public class PatientService {
         List<PersonalInfo> infos = nurseApi.searchPatientsByName(name);
         List<String> patientIds = infos.stream().map(PersonalInfo::getPatientId).collect(Collectors.toList());
         List<String> isNotDeletedIds = adminApi.getIsNotDeletedIds(patientIds);
-//        if (isNotDeletedIds.isEmpty())
-
-//        patientIds.retainAll();
+        patientIds.retainAll(isNotDeletedIds);
+        infos = nurseApi.readMultiPatientInfoById(patientIds);
         List<MedicalTreatmentProfile> profiles = doctorApi.searchTreatmentProfiles(patientIds, disease, medicine);
 
         List<Patient> patients = new ArrayList<>();
