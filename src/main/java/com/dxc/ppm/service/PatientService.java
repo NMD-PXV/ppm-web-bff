@@ -34,7 +34,7 @@ public class PatientService {
     public Patient readPatientById(String patientId) {
         checkPatientId(patientId);
         Patient patient = new Patient();
-        patient.setId(patientId);
+        patient.setPatientId(patientId);
         patient.setPersonalInfo(nurseApi.readPatientInfoById(patientId));
         patient.setMedicalTreatmentProfile(doctorApi.searchProfilesByPatientId(patientId));
         return patient;
@@ -64,11 +64,12 @@ public class PatientService {
     }
 
     public void checkInputPatient(Patient patient) {
-        if (patient.getPersonalInfo().getFullName().isEmpty()
+        if (patient.getPersonalInfo().getFullname().isEmpty()
                 || patient.getPersonalInfo().getAddress().isEmpty()
                 || patient.getPersonalInfo().getPob().isEmpty()
                 || patient.getPersonalInfo().getSex().isEmpty()
-                || patient.getPersonalInfo().getDob().toString().isEmpty())
+                || patient.getPersonalInfo().getDob().toString().isEmpty()
+        )
             throw new WebBFFException(INVALID_INPUT_PATIENT_INFO, patient.getPersonalInfo());
 
         for (MedicalTreatmentProfile medicalProfile : patient.getMedicalTreatmentProfile()) {
@@ -77,16 +78,16 @@ public class PatientService {
         }
     }
 
-
     public List<Patient> searchPatients(String name, String disease, String medicine) {
         List<PersonalInfo> infos = nurseApi.searchPatientsByName(name);
         List<String> patientIds = infos.stream().map(PersonalInfo::getPatientId).collect(Collectors.toList());
         List<MedicalTreatmentProfile> profiles = doctorApi.searchTreatmentProfiles(patientIds, disease, medicine);
+
         List<Patient> patients = new ArrayList<>();
         Map<String, List<MedicalTreatmentProfile>> map = new HashMap<>();
         for (PersonalInfo i : infos) {
             Patient patient = new Patient();
-            patient.setId(i.getPatientId());
+            patient.setPatientId(i.getPatientId());
             patient.setPersonalInfo(i);
             patients.add(patient);
         }
@@ -98,7 +99,7 @@ public class PatientService {
         }
         for (Map.Entry<String, List<MedicalTreatmentProfile>> e : map.entrySet()) {
             patients.stream().
-                    filter(p -> p.getId().equals(e.getKey())).
+                    filter(p -> p.getPatientId().equals(e.getKey())).
                     findAny().
                     get().
                     setMedicalTreatmentProfile(e.getValue());

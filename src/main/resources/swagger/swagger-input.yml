@@ -155,7 +155,7 @@ definitions:
   Patient:
     type: "object"
     properties:
-      id:
+      patientId:
         type: "string"
       MedicalTreatmentProfile:
         type: "array"
@@ -168,7 +168,7 @@ definitions:
     properties:
       patientId:
         type: "string"
-      fullName:
+      fullname:
         type: "string"
         example: "Nguyen Minh Duc"
       address:
