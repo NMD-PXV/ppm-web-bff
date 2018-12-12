@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static com.dxc.ppm.webbff.common.BffError.*;
+
 @Service
 public class PatientService {
     @Autowired
@@ -46,7 +48,7 @@ public class PatientService {
 
     public String searchTest(String patientId, String medicineName) {
         checkPatientId(patientId);
-        if (medicineName.isEmpty()) throw new BffException(BffError.MEDICINE_NAME_IS_NULL);
+        if (medicineName.isEmpty()) throw new BffException(MEDICINE_NAME_IS_NULL);
 
         return treatmentApi.checkAllergic(patientId, medicineName);
     }
@@ -65,21 +67,17 @@ public class PatientService {
 
     public void checkPatientId(String patientId) {
         if (patientId.isEmpty() || patientId.contains(" "))
-            throw new BffException(BffError.PATIENT_ID_IS_NULL_OR_CONTAINS_SPACE, patientId);
+            throw new BffException(PATIENT_ID_IS_NULL_OR_CONTAINS_SPACE, patientId);
     }
 
     public void checkInputPatient(Patient patient) {
-        if (patient.getPersonalInfo().getFullname().isEmpty()
-                || patient.getPersonalInfo().getAddress().isEmpty()
-                || patient.getPersonalInfo().getPob().isEmpty()
-                || patient.getPersonalInfo().getSex().isEmpty()
-                || patient.getPersonalInfo().getDob().toString().isEmpty()
-        )
-            throw new BffException(BffError.INVALID_INPUT_PATIENT_INFO, patient.getPersonalInfo());
-
+        if (patient.getPersonalInfo().getPatientId() == null || patient.getPersonalInfo().getAddress() == null
+                || patient.getPersonalInfo().getDob() == null || patient.getPersonalInfo().getSex() == null
+                || patient.getPersonalInfo().getPob() == null || patient.getPersonalInfo().getFullname() == null)
+            throw new BffException(INVALID_INPUT_PATIENT_INFO);
         for (MedicalTreatmentProfile medicalProfile : patient.getMedicalTreatmentProfile()) {
             if (medicalProfile.getDoctor().isEmpty() || medicalProfile.getCreatedDate().toString().isEmpty())
-                throw new BffException(BffError.INVALID_INPUT_PATIENT_MEDICAL_PROFILE, medicalProfile);
+                throw new BffException(INVALID_INPUT_PATIENT_MEDICAL_PROFILE, medicalProfile);
         }
     }
 
@@ -87,20 +85,18 @@ public class PatientService {
         List<PersonalInfo> infos = infoApi.searchPatientsByName(name);
         List<String> patientIds = infos.stream().map(PersonalInfo::getPatientId).collect(Collectors.toList());
         List<String> isNotDeletedIds = patientApi.getIsNotDeletedIds(patientIds);
-        List<MedicalTreatmentProfile> profiles = new ArrayList<>();
-        if(!isNotDeletedIds.isEmpty())
-        {
+        List<MedicalTreatmentProfile> profiles;
+        if (!isNotDeletedIds.isEmpty()) {
             patientIds.retainAll(isNotDeletedIds);
             infos = infoApi.readMultiPatientInfoById(patientIds);
             profiles = treatmentApi.searchTreatmentProfiles(patientIds, disease, medicine);
-        }
-        else{
+        } else {
             profiles = treatmentApi.searchTreatmentProfiles(isNotDeletedIds, disease, medicine);
             Set<String> ids = profiles.stream().map(MedicalTreatmentProfile::getPatientId).collect(Collectors.toSet());
             infos = infoApi.readMultiPatientInfoById(new ArrayList<>(ids));
         }
 
-        if(infos.isEmpty())
+        if (infos.isEmpty())
             return new ArrayList<>();
         List<Patient> patients = new ArrayList<>();
         Map<String, List<MedicalTreatmentProfile>> map = new HashMap<>();
@@ -117,16 +113,16 @@ public class PatientService {
                 map.get(p.getPatientId()).add(p);
         }
         for (Map.Entry<String, List<MedicalTreatmentProfile>> e : map.entrySet()) {
-            patients.stream().
-                    filter(p -> p.getPatientId().equals(e.getKey())).
-                    findAny().
-                    get().
-                    setMedicalTreatmentProfile(e.getValue());
+            patients.stream()
+                    .filter(p -> p.getPatientId().equals(e.getKey()))
+                    .findAny()
+                    .get()
+                    .setMedicalTreatmentProfile(e.getValue());
         }
         return patients;
     }
 
-    public String deletePatientProfiles(List<String> patientIds){
+    public String deletePatientProfiles(List<String> patientIds) {
         return patientApi.deletePatientProfiles(patientIds);
     }
 }
