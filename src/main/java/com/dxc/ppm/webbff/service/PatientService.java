@@ -87,9 +87,8 @@ public class PatientService {
         List<String> isNotDeletedIds = patientApi.getIsNotDeletedIds(patientIds);
         List<MedicalTreatmentProfile> profiles;
         if (!isNotDeletedIds.isEmpty()) {
-            patientIds.retainAll(isNotDeletedIds);
             infos = infoApi.readMultiPatientInfoById(patientIds);
-            profiles = treatmentApi.searchTreatmentProfiles(patientIds, disease, medicine);
+            profiles = treatmentApi.searchTreatmentProfiles(isNotDeletedIds, disease, medicine);
         } else {
             profiles = treatmentApi.searchTreatmentProfiles(isNotDeletedIds, disease, medicine);
             Set<String> ids = profiles.stream().map(MedicalTreatmentProfile::getPatientId).collect(Collectors.toSet());
