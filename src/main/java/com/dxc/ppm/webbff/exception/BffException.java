@@ -1,6 +1,6 @@
-package com.dxc.ppm.exception;
+package com.dxc.ppm.webbff.exception;
 
-import com.dxc.ppm.common.BffError;
+import com.dxc.ppm.webbff.common.BffError;
 
 import java.util.Arrays;
 import java.util.stream.Collectors;

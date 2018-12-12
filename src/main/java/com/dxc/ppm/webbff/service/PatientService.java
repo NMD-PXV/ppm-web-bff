@@ -1,38 +1,37 @@
-package com.dxc.ppm.service;
+package com.dxc.ppm.webbff.service;
 
-import com.dxc.ppm.api.AdminApi;
-import com.dxc.ppm.api.DoctorApi;
-import com.dxc.ppm.api.NurseApi;
-import com.dxc.ppm.api.model.*;
-import com.dxc.ppm.exception.BffException;
+import com.dxc.ppm.webbff.api.PatientApi;
+import com.dxc.ppm.webbff.api.TreatmentApi;
+import com.dxc.ppm.webbff.api.InfoApi;
+import com.dxc.ppm.webbff.exception.BffException;
+import com.dxc.ppm.webbff.api.model.MedicalTreatmentProfile;
+import com.dxc.ppm.webbff.api.model.Patient;
+import com.dxc.ppm.webbff.api.model.PersonalInfo;
+import com.dxc.ppm.webbff.common.BffError;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static com.dxc.ppm.common.BffError.*;
-
 @Service
 public class PatientService {
     @Autowired
-    private NurseApi nurseApi;
+    private InfoApi infoApi;
 
     @Autowired
-    private DoctorApi doctorApi;
+    private TreatmentApi treatmentApi;
 
     @Autowired
-    private AdminApi adminApi;
+    private PatientApi patientApi;
 
     //TODO write exception
 
     public String upsert(Patient patient) {
         checkInputPatient(patient);
-        String patientId = nurseApi.upsert(patient.getPersonalInfo());
-        doctorApi.upsertProfiles(patientId, patient.getMedicalTreatmentProfile());
-        adminApi.addPatients(Collections.singletonList(patientId));
+        String patientId = infoApi.upsert(patient.getPersonalInfo());
+        treatmentApi.upsertProfiles(patientId, patient.getMedicalTreatmentProfile());
+        patientApi.addPatients(Collections.singletonList(patientId));
         return patientId;
     }
 
@@ -40,33 +39,33 @@ public class PatientService {
         checkPatientId(patientId);
         Patient patient = new Patient();
         patient.setPatientId(patientId);
-        patient.setPersonalInfo(nurseApi.readPatientInfoById(patientId));
-        patient.setMedicalTreatmentProfile(doctorApi.searchProfilesByPatientId(patientId));
+        patient.setPersonalInfo(infoApi.readPatientInfoById(patientId));
+        patient.setMedicalTreatmentProfile(treatmentApi.searchProfilesByPatientId(patientId));
         return patient;
     }
 
     public String searchTest(String patientId, String medicineName) {
         checkPatientId(patientId);
-        if (medicineName.isEmpty()) throw new BffException(MEDICINE_NAME_IS_NULL);
+        if (medicineName.isEmpty()) throw new BffException(BffError.MEDICINE_NAME_IS_NULL);
 
-        return doctorApi.checkAllergic(patientId, medicineName);
+        return treatmentApi.checkAllergic(patientId, medicineName);
     }
 
     public List<String> upsertMultiPatients(List<Patient> patients) {
         List<String> results = new ArrayList<>();
         for (Patient patient : patients) {
             checkInputPatient(patient);
-            String patientId = nurseApi.upsert(patient.getPersonalInfo());
-            results.add(doctorApi.upsertProfiles(patientId, patient.getMedicalTreatmentProfile()));
+            String patientId = infoApi.upsert(patient.getPersonalInfo());
+            results.add(treatmentApi.upsertProfiles(patientId, patient.getMedicalTreatmentProfile()));
         }
-        adminApi.addPatients(results);
+        patientApi.addPatients(results);
         return results;
     }
 
 
     public void checkPatientId(String patientId) {
         if (patientId.isEmpty() || patientId.contains(" "))
-            throw new BffException(PATIENT_ID_IS_NULL_OR_CONTAINS_SPACE, patientId);
+            throw new BffException(BffError.PATIENT_ID_IS_NULL_OR_CONTAINS_SPACE, patientId);
     }
 
     public void checkInputPatient(Patient patient) {
@@ -76,21 +75,21 @@ public class PatientService {
                 || patient.getPersonalInfo().getSex().isEmpty()
                 || patient.getPersonalInfo().getDob().toString().isEmpty()
         )
-            throw new BffException(INVALID_INPUT_PATIENT_INFO, patient.getPersonalInfo());
+            throw new BffException(BffError.INVALID_INPUT_PATIENT_INFO, patient.getPersonalInfo());
 
         for (MedicalTreatmentProfile medicalProfile : patient.getMedicalTreatmentProfile()) {
             if (medicalProfile.getDoctor().isEmpty() || medicalProfile.getCreatedDate().toString().isEmpty())
-                throw new BffException(INVALID_INPUT_PATIENT_MEDICAL_PROFILE, medicalProfile);
+                throw new BffException(BffError.INVALID_INPUT_PATIENT_MEDICAL_PROFILE, medicalProfile);
         }
     }
 
     public List<Patient> searchPatients(String name, String disease, String medicine) {
-        List<PersonalInfo> infos = nurseApi.searchPatientsByName(name);
+        List<PersonalInfo> infos = infoApi.searchPatientsByName(name);
         List<String> patientIds = infos.stream().map(PersonalInfo::getPatientId).collect(Collectors.toList());
-        List<String> isNotDeletedIds = adminApi.getIsNotDeletedIds(patientIds);
+        List<String> isNotDeletedIds = patientApi.getIsNotDeletedIds(patientIds);
         patientIds.retainAll(isNotDeletedIds);
-        infos = nurseApi.readMultiPatientInfoById(patientIds);
-        List<MedicalTreatmentProfile> profiles = doctorApi.searchTreatmentProfiles(patientIds, disease, medicine);
+        infos = infoApi.readMultiPatientInfoById(patientIds);
+        List<MedicalTreatmentProfile> profiles = treatmentApi.searchTreatmentProfiles(patientIds, disease, medicine);
 
         List<Patient> patients = new ArrayList<>();
         Map<String, List<MedicalTreatmentProfile>> map = new HashMap<>();
@@ -117,6 +116,6 @@ public class PatientService {
     }
 
     public String deletePatientProfiles(List<String> patientIds){
-        return adminApi.deletePatientProfiles(patientIds);
+        return patientApi.deletePatientProfiles(patientIds);
     }
 }

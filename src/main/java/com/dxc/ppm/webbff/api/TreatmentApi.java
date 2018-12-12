@@ -1,14 +1,13 @@
-package com.dxc.ppm.api;
+package com.dxc.ppm.webbff.api;
 
-import com.dxc.ppm.api.model.MedicalTreatmentProfile;
+import com.dxc.ppm.webbff.api.model.MedicalTreatmentProfile;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
-import javax.websocket.server.PathParam;
 import java.util.List;
 
-@FeignClient(name = "DoctorApi", url = "${DoctorApi.url}")
-public interface DoctorApi {
+@FeignClient(name = "TreatmentApi", url = "${TreatmentApi.url}")
+public interface TreatmentApi {
 
     @PostMapping("/v1/patients/{id}/profiles")
     String upsertProfiles(@PathVariable("id") String patientId,

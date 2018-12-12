@@ -1,6 +1,6 @@
-package com.dxc.ppm.handler;
+package com.dxc.ppm.webbff.handler;
 
-import com.dxc.ppm.exception.BffException;
+import com.dxc.ppm.webbff.exception.BffException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;

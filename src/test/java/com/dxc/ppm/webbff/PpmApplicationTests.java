@@ -1,4 +1,4 @@
-package com.dxc.ppm;
+package com.dxc.ppm.webbff;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

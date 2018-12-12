@@ -1,13 +1,13 @@
-package com.dxc.ppm.api;
+package com.dxc.ppm.webbff.api;
 
-import com.dxc.ppm.api.model.PersonalInfo;
+import com.dxc.ppm.webbff.api.model.PersonalInfo;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@FeignClient(name = "NurseApi", url = "${NurseApi.url}")
-public interface NurseApi {
+@FeignClient(name = "InfoApi", url = "${InfoApi.url}")
+public interface InfoApi {
     @PostMapping("/v1/patients/info")
     String upsert(@RequestBody PersonalInfo info);
 

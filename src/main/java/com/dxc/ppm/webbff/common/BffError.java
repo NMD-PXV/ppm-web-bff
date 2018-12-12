@@ -1,4 +1,4 @@
-package com.dxc.ppm.common;
+package com.dxc.ppm.webbff.common;
 
 import org.springframework.http.HttpStatus;
 

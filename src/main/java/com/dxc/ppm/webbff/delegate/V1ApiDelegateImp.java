@@ -1,9 +1,8 @@
-package com.dxc.ppm.delegate;
+package com.dxc.ppm.webbff.delegate;
 
-import com.dxc.ppm.api.V1ApiDelegate;
-import com.dxc.ppm.api.model.MedicalTreatmentProfile;
-import com.dxc.ppm.api.model.Patient;
-import com.dxc.ppm.service.PatientService;
+import com.dxc.ppm.webbff.api.V1ApiDelegate;
+import com.dxc.ppm.webbff.api.model.Patient;
+import com.dxc.ppm.webbff.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;

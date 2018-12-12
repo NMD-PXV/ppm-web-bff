@@ -5,8 +5,8 @@ spring:
     password: root
   jpa.hibernate.ddl-auto: update
   jackson.serialization.WRITE_DATES_AS_TIMESTAMPS: false
-DoctorApi.url: http://localhost:8080
-NurseApi.url: http://localhost:7070
-AdminApi.url: http://localhost:6060
+TreatmentApi.url: http://localhost:8080
+InfoApi.url: http://localhost:7070
+PatientApi.url: http://localhost:6060
 server:
   port: 9090
