@@ -87,10 +87,21 @@ public class PatientService {
         List<PersonalInfo> infos = infoApi.searchPatientsByName(name);
         List<String> patientIds = infos.stream().map(PersonalInfo::getPatientId).collect(Collectors.toList());
         List<String> isNotDeletedIds = patientApi.getIsNotDeletedIds(patientIds);
-        patientIds.retainAll(isNotDeletedIds);
-        infos = infoApi.readMultiPatientInfoById(patientIds);
-        List<MedicalTreatmentProfile> profiles = treatmentApi.searchTreatmentProfiles(patientIds, disease, medicine);
+        List<MedicalTreatmentProfile> profiles = new ArrayList<>();
+        if(!isNotDeletedIds.isEmpty())
+        {
+            patientIds.retainAll(isNotDeletedIds);
+            infos = infoApi.readMultiPatientInfoById(patientIds);
+            profiles = treatmentApi.searchTreatmentProfiles(patientIds, disease, medicine);
+        }
+        else{
+            profiles = treatmentApi.searchTreatmentProfiles(isNotDeletedIds, disease, medicine);
+            Set<String> ids = profiles.stream().map(MedicalTreatmentProfile::getPatientId).collect(Collectors.toSet());
+            infos = infoApi.readMultiPatientInfoById(new ArrayList<>(ids));
+        }
 
+        if(infos.isEmpty())
+            return new ArrayList<>();
         List<Patient> patients = new ArrayList<>();
         Map<String, List<MedicalTreatmentProfile>> map = new HashMap<>();
         for (PersonalInfo i : infos) {
