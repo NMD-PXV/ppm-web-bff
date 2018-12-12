@@ -7,7 +7,6 @@ tags:
 - name: "patients"
   description: "Everything about customers"
 schemes:
-- "https"
 - "http"
 paths:
   /v1/patients/bulk:
@@ -152,7 +151,7 @@ paths:
           description: "PatientEntity not found"
         500:
           description: "Internal server error"
-  v1/patients/{id}/tests:
+  /v1/patients/{id}/tests:
     get:
       tags:
       - "patients"
