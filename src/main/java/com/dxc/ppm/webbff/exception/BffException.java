@@ -1,6 +1,7 @@
 package com.dxc.ppm.webbff.exception;
 
 import com.dxc.ppm.webbff.common.BffError;
+import org.springframework.http.HttpStatus;
 
 import java.util.Arrays;
 import java.util.stream.Collectors;

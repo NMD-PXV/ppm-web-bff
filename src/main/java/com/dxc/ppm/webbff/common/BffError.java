@@ -9,8 +9,8 @@ public enum BffError {
         INVALID_INPUT_PATIENT_MEDICAL_PROFILE(3, HttpStatus.BAD_REQUEST),
         MEDICINE_NAME_IS_NULL(4, HttpStatus.BAD_REQUEST);
 
-        private final int code;
-        private final HttpStatus httpStatus;
+        private int code;
+        private HttpStatus httpStatus;
 
         BffError(int code, HttpStatus httpStatus) {
             this.code = code;
