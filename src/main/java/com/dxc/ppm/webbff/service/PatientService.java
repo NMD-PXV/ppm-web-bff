@@ -76,7 +76,7 @@ public class PatientService {
                 || patient.getPersonalInfo().getPob() == null || patient.getPersonalInfo().getFullname() == null)
             throw new BffException(INVALID_INPUT_PATIENT_INFO);
         for (MedicalTreatmentProfile medicalProfile : patient.getMedicalTreatmentProfile()) {
-            if (medicalProfile.getDoctor().isEmpty() || medicalProfile.getCreatedDate().toString().isEmpty())
+            if (medicalProfile.getDoctor() == null|| medicalProfile.getCreatedDate() == null)
                 throw new BffException(INVALID_INPUT_PATIENT_MEDICAL_PROFILE, medicalProfile);
         }
     }
