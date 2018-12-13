@@ -27,8 +27,6 @@ public class PatientService {
     @Autowired
     private PatientApi patientApi;
 
-    //TODO write exception
-
     public String upsert(Patient patient) {
         checkInputPatient(patient);
         String patientId = infoApi.upsert(patient.getPersonalInfo());
@@ -39,6 +37,8 @@ public class PatientService {
 
     public Patient readPatientById(String patientId) {
         checkPatientId(patientId);
+        if(patientApi.getIsNotDeletedIds(Collections.singletonList(patientId)).isEmpty())
+            throw new BffException(PATIENT_NOT_FOUND);
         Patient patient = new Patient();
         patient.setPatientId(patientId);
         patient.setPersonalInfo(infoApi.readPatientInfoById(patientId));

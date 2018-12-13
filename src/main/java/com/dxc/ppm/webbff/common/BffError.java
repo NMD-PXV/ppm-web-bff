@@ -7,7 +7,8 @@ public enum BffError {
         PATIENT_ID_IS_NULL_OR_CONTAINS_SPACE(0, HttpStatus.NOT_FOUND),
         INVALID_INPUT_PATIENT_INFO(1, HttpStatus.BAD_REQUEST),
         INVALID_INPUT_PATIENT_MEDICAL_PROFILE(3, HttpStatus.BAD_REQUEST),
-        MEDICINE_NAME_IS_NULL(4, HttpStatus.BAD_REQUEST);
+        MEDICINE_NAME_IS_NULL(4, HttpStatus.BAD_REQUEST),
+        PATIENT_NOT_FOUND(5, HttpStatus.NOT_FOUND);
 
         private int code;
         private HttpStatus httpStatus;
