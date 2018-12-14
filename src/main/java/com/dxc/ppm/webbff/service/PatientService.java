@@ -37,7 +37,7 @@ public class PatientService {
 
     public Patient readPatientById(String patientId) {
         checkPatientId(patientId);
-        if(patientApi.getIsNotDeletedIds(Collections.singletonList(patientId)).isEmpty())
+        if (patientApi.getIsNotDeletedIds(Collections.singletonList(patientId)).isEmpty())
             throw new BffException(PATIENT_NOT_FOUND);
         Patient patient = new Patient();
         patient.setPatientId(patientId);
@@ -76,7 +76,7 @@ public class PatientService {
                 || patient.getPersonalInfo().getPob() == null || patient.getPersonalInfo().getFullname() == null)
             throw new BffException(INVALID_INPUT_PATIENT_INFO);
         for (MedicalTreatmentProfile medicalProfile : patient.getMedicalTreatmentProfile()) {
-            if (medicalProfile.getDoctor() == null|| medicalProfile.getCreatedDate() == null)
+            if (medicalProfile.getDoctor() == null || medicalProfile.getCreatedDate() == null)
                 throw new BffException(INVALID_INPUT_PATIENT_MEDICAL_PROFILE, medicalProfile);
         }
     }
@@ -85,14 +85,15 @@ public class PatientService {
         List<PersonalInfo> infos = infoApi.searchPatientsByName(name);
         List<String> patientIds = infos.stream().map(PersonalInfo::getPatientId).collect(Collectors.toList());
         List<String> isNotDeletedIds = patientApi.getIsNotDeletedIds(patientIds);
-        List<MedicalTreatmentProfile> profiles;
-        if (!isNotDeletedIds.isEmpty()) {
-            infos = infoApi.readMultiPatientInfoById(patientIds);
-            profiles = treatmentApi.searchTreatmentProfiles(isNotDeletedIds, disease, medicine);
-        } else {
-            profiles = treatmentApi.searchTreatmentProfiles(isNotDeletedIds, disease, medicine);
-            Set<String> ids = profiles.stream().map(MedicalTreatmentProfile::getPatientId).collect(Collectors.toSet());
-            infos = infoApi.readMultiPatientInfoById(new ArrayList<>(ids));
+
+        List<MedicalTreatmentProfile> profiles = treatmentApi.searchTreatmentProfiles(isNotDeletedIds, disease, medicine);
+        Set<String> ids = profiles.stream().map(MedicalTreatmentProfile::getPatientId).collect(Collectors.toSet());
+        if (!ids.isEmpty())
+            isNotDeletedIds.retainAll(new ArrayList<>(ids));
+        infos = infoApi.readMultiPatientInfoById(isNotDeletedIds);
+        profiles.clear();
+        for (String id : isNotDeletedIds) {
+            profiles.addAll(treatmentApi.searchProfilesByPatientId(id));
         }
 
         if (infos.isEmpty())
